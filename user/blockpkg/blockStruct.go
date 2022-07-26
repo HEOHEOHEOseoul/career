@@ -21,7 +21,7 @@ type Block struct {
 	Sig       []byte //서명
 }
 
-func NewBlock(prevHash [32]byte, height int, txID [32]byte) *Block {
+func NewBlock(prevHash [32]byte, height int, txID [32]byte, data string) *Block {
 	newBlock := &Block{}
 	loc, _ := time.LoadLocation("Asia/Seoul")
 	now := time.Now()
@@ -29,7 +29,7 @@ func NewBlock(prevHash [32]byte, height int, txID [32]byte) *Block {
 	newBlock.Timestamp = []byte(t.String())
 	newBlock.PrevHash = prevHash
 	newBlock.Height = height
-	newBlock.Data = []byte("data")
+	newBlock.Data = []byte(data)
 	newBlock.Txid = txID
 	newPoW := NewProofOfWork(newBlock)
 	newBlock.Nonce, newBlock.Hash = newPoW.Run()
