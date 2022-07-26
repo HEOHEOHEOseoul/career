@@ -69,9 +69,9 @@ import (
 // }
 
 func main() {
-	request := &httppkg.Request{}
+
 	router := mux.NewRouter()
-	router.HandleFunc("/Apply/Career", request.ApplyCareer).Methods("Post")
+	router.HandleFunc("/Apply/Career", httppkg.ApplyCareer).Methods("Post")
 	router.HandleFunc("/newBlk", httppkg.CreateNewBlock).Methods("Post")
 
 	http.ListenAndServe(":9000", router)
