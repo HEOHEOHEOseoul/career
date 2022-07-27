@@ -4,12 +4,8 @@ package main
 //Restful API
 
 import (
-	"bytes"
 	"crypto/ecdsa"
-	"encoding/json"
 	"fmt"
-	"log"
-	"net/http"
 	"net/rpc"
 )
 
@@ -57,43 +53,56 @@ func main() {
 	// }
 	// defer Client.Close() // 메인이 끝나기 직전에 실행되는 함수 (연결 해지)
 	// args := &Args{1, 2}
-	r := &Request{}
-	response := new(Response)
-	// Alias 가 비어있지 않다 -> Wallet 생성 요청
-	if r.Alias != "" {
-		Client, err := rpc.Dial("tcp", "127.0.0.1:9000")
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		defer Client.Close()
-		err = Client.Call("Return.SendWalletAddress", r.Alias, response)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		fmt.Println(response.Address, r.Alias, "님의 지갑의 Address 입니다 ")
+
+	client, err := rpc.Dial("tcp", "localhost:9000")
+	if err != nil {
+		fmt.Println(err)
 	}
-	if r.T != nil {
-		// T가 비어있지 않다면 거래 등록을 해달라는것 . GenerateTranslation을 부르면 됨
-		value := map[string][]byte{
-			"Txid":      r.T.Txid,
-			"Timestamp": r.T.TimeStamp,
-			"Applier":   r.T.Applier,
-			"Company":   r.T.Company,
-			"Career":    r.T.Career,
-			"Payment":   r.T.Payment,
-			"Job":       r.T.Job,
-			"Proof":     r.T.Proof}
-		json_data, err := json.Marshal(value)
-		if err != nil {
-			log.Fatal(err)
+	defer client.Close()
+	tx := &Transaction{}
+
+	/*
+		r := &Request{}
+		response := new(Response)
+		fmt.Println(r)
+		// Alias 가 비어있지 않다 -> Wallet 생성 요청
+		if r.Alias != "" {
+			Client, err := rpc.Dial("tcp", "127.0.0.1:9000")
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			defer Client.Close()
+			err = Client.Call("Return.SendWalletAddress", r.Alias, response)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			fmt.Println(response.Address, r.Alias, "님의 지갑의 Address 입니다 ")
 		}
-		resp, err := http.Post("http://localhost:9000/Apply/Career", "application/json", bytes.NewBuffer(json_data))
-		var response map[string]interface{}
-		json.NewDecoder(resp.Body).Decode(&response)
-		fmt.Println(response["json"])
-	}
+		if r.T != nil {
+			// T가 비어있지 않다면 거래 등록을 해달라는것 . GenerateTranslation을 부르면 됨
+			value := map[string][]byte{
+				"Txid":      r.T.Txid,
+				"Timestamp": r.T.TimeStamp,
+				"Applier":   r.T.Applier,
+				"Company":   r.T.Company,
+				"Career":    r.T.Career,
+				"Payment":   r.T.Payment,
+				"Job":       r.T.Job,
+				"Proof":     r.T.Proof}
+			json_data, err := json.Marshal(value)
+			if err != nil {
+				log.Fatal(err)
+			}
+			resp, err := http.Post("http://localhost:9000/Apply/Career", "application/json", bytes.NewBuffer(json_data))
+			var response map[string]interface{}
+			json.NewDecoder(resp.Body).Decode(&response)
+			fmt.Println(response["json"])
+		}
+
+
+	*/
 
 	// alias := &Request{"test", [32]byte{}, ""}
 	// err = Client.Call("Return.SendWalletAddress", alias, reply)

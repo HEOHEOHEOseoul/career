@@ -23,6 +23,10 @@ type Response struct {
 	Address string
 }
 
+type SignTest struct {
+	sign []byte
+}
+
 type Wallet struct {
 	PublicKey  []byte
 	PrivateKey ecdsa.PrivateKey
@@ -91,10 +95,25 @@ func (r *Return) SendWalletAddress(wallet Wallet, response *Response) error {
 	return nil
 }
 
+//txid에 프라이빗키로 서명
+func (s *SignTest) TxSign(txid [32]byte, prvKey *ecdsa.PrivateKey) []byte {
+	// jsonTx, err := json.Marshal(tx)
+	// if err != nil {
+	// 	fmt.Println("json 변환 중 에러")
+	// 	return []byte{}
+	// }
+	// shaTx := sha256.Sum256([]byte(jsonTx))
+	signVal, _ := ecdsa.SignASN1(rand.Reader, prvKey, txid[:])
+	s.sign = []byte{}
+	// tx.Sign = signVals
+	s.sign = signVal
+	return signVal
+}
+
 // -------------------- main ----------------------------------------------------
 
 func main() {
-	rpc.Register(new(Return))
+	rpc.Register(new(SignTest))
 	In, err := net.Listen("tcp", ":9000")
 	fmt.Println(In, "In 입니다")
 	if err != nil {

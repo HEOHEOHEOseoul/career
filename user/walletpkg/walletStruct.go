@@ -1,15 +1,17 @@
 package walletpkg
 
 import (
-	"cabb/user/blockpkg"
-	"cabb/user/txpkg"
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/sha256"
+	"encoding/json"
 	"fmt"
 
 	"github.com/btcsuite/btcutil/base58"
+
+	"github.com/heoseoul/cabb/user/blockpkg"
+	"github.com/heoseoul/cabb/user/txpkg"
 	"golang.org/x/crypto/ripemd160"
 )
 
@@ -79,4 +81,15 @@ func newKeyPair() (ecdsa.PrivateKey, []byte) {
 func (w *Wallet) WalletPrint() {
 	fmt.Printf("==========Wallet Info=============\n")
 	fmt.Printf("Wallet: %s\nPrivate Key: %d\nPublic Key: %d\nWallet Address: %s\n\n", w.Alias, w.PrvKey, w.PubKey, w.Address)
+}
+
+func (w *Wallet) TxSign(tx *txpkg.Tx) {
+	jsonTx, err := json.Marshal(tx)
+	if err != nil {
+		fmt.Println("json 변환 중 에러")
+		return
+	}
+	shaTx := sha256.Sum256([]byte(jsonTx))
+	signVal, _ := ecdsa.SignASN1(rand.Reader, &w.PrvKey, shaTx[:])
+	tx.Sign = signVal
 }

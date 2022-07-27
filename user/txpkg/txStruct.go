@@ -2,12 +2,14 @@ package txpkg
 
 import (
 	"bytes"
+	"crypto/ecdsa"
+	"crypto/rand"
 	"crypto/sha256"
 	"fmt"
 	"reflect"
 	"time"
 
-	"cabb/user/blockpkg"
+	"github.com/heoseoul/cabb/user/blockpkg"
 )
 
 type Tx struct {
@@ -20,6 +22,7 @@ type Tx struct {
 	Job       []byte // 직종, 업무
 	Proof     []byte // 경력증명서 pdf
 	WAddr     string // 지갑 주소
+	Sign      []byte // 서명
 }
 
 //TX Hash 데이터 생성
@@ -126,4 +129,10 @@ func (txs *Txs) FindTxByAddr(wAddr string, bs *blockpkg.Blocks) []*Tx {
 func (t *Tx) PrintTx() {
 	fmt.Println("==========Transaction Info=============")
 	fmt.Printf("TxId: %x\n Applier: %s\n Company: %s\n Career: %s\n Payment: %s\n TimeStamp: %d\n Job: %s\n Proof: %s\nWallet Address: %s\n\n", t.TxID, t.Applier, t.Company, t.Career, t.Payment, t.TimeStamp, t.Job, t.Proof, t.WAddr)
+}
+
+//txid, 프라이빗키 받아서 서명
+func TxSign(txid [32]byte, prvKey *ecdsa.PrivateKey) []byte {
+	signVal, _ := ecdsa.SignASN1(rand.Reader, prvKey, txid[:])
+	return signVal
 }

@@ -1,5 +1,7 @@
 package txpkg
 
+import "crypto/ecdsa"
+
 type Txs struct {
 	TxMap map[[32]byte]*Tx
 }
@@ -14,4 +16,16 @@ func CreateTxDB() *Txs {
 // Txs에 TX 저장
 func (txs *Txs) AddTx(tx *Tx) {
 	txs.TxMap[tx.TxID] = tx
+}
+
+//블록 생성 전 서명 확인
+func (txs *Txs) CheckSign(txid [32]byte, pubKey *ecdsa.PublicKey) bool {
+	check := false
+	for i, j := range txs.TxMap {
+		if i == txid {
+			check = ecdsa.VerifyASN1(pubKey, txid[:], j.Sign)
+			break
+		}
+	}
+	return check
 }

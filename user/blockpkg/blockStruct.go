@@ -22,6 +22,7 @@ type Block struct {
 }
 
 func NewBlock(prevHash [32]byte, height int, txID [32]byte) *Block {
+
 	newBlock := &Block{}
 	loc, _ := time.LoadLocation("Asia/Seoul")
 	now := time.Now()
