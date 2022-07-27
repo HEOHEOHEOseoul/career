@@ -34,6 +34,7 @@ Transaction Structure :
 	Job       []byte // 직종, 업무  
 	Proof     []byte // 경력증명서 pdf  
 	wAddr     string // 지갑 주소  
+	Sign	  []byte //서명
   
 Wallet Structure : 
 
