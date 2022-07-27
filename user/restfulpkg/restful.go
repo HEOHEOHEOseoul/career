@@ -59,7 +59,7 @@ func main() {
 		fmt.Println(err)
 	}
 	defer client.Close()
-	tx := &Transaction{}
+	// tx := &Transaction{}
 
 	/*
 		r := &Request{}
