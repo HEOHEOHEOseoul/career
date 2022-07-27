@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{layout/login_basic::setContent(~{this::content})}">
+	<th:block th:fragment="content">
+		<form method="post" action="/signin">
+		    <div class="container">
+		        <h1>회원가입</h1>
+		        <div class="form-group">
+		            <label for="inputEmail4">ID</label>
+		            <input type="text" class="form-control" id="inputEmail4" name="id" placeholder="아이디로 사용할 이메일을 입력해주세요">
+		        </div>
+		        <!-- 귀찮아서 검증아직 구현 X -->
+		        <div class="form-group">
+		            <label for="inputPassword4">password</label>
+		            <input type="password" class="form-control" id="inputPassword4" name="pw" placeholder="사용자 비밀번호">
+		        </div>
+		        <button type="submit" class="btn btn-primary">가입 완료</button>
+		    </div>
+		</form>
+	</th:block>
+</th:block>
