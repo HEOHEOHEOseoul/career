@@ -73,6 +73,8 @@ func main() {
 	router.HandleFunc("/Apply/Career", httppkg.ApplyCareer).Methods("Post")
 	router.HandleFunc("/newBlk", httppkg.CreateNewBlock).Methods("Post")
 	router.HandleFunc("/refTx", httppkg.FindAllbyAddr).Methods("Get")
+	router.HandleFunc("/detailTx", httppkg.DetailTx).Methods("Get")
+	router.HandleFunc("/serchBlk", httppkg.SearchBlock).Methods("Get")
 
 	http.ListenAndServe(":9000", router)
 }
