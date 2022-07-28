@@ -110,7 +110,6 @@ func (r *Request) ConnectWallet(w http.ResponseWriter, re *http.Request) {
 		"PublicKey":  PublicKey,
 		"PrivateKey": PrivateKey,
 	}
-
 	json_data, err := json.Marshal(value) // Parsing 완료
 	fmt.Println(json_data, "json 파싱한 후 데이터 ")
 
