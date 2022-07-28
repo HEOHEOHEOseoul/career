@@ -12,6 +12,7 @@ func CreateTxDB() *Txs {
 }
 
 // Txs에 TX 저장
-func (txs *Txs) AddTx(tx *Tx) {
+func (txs *Txs) AddTx(tx *Tx) [32]byte {
 	txs.TxMap[tx.TxID] = tx
+	return tx.TxID
 }

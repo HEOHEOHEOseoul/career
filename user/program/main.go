@@ -1,5 +1,12 @@
 package main
 
+import (
+	"cabb/user/httppkg"
+	"net/http"
+
+	"github.com/gorilla/mux"
+)
+
 // import (
 // 	"cabb/user/blockpkg"
 // 	"cabb/user/txpkg"
@@ -60,3 +67,12 @@ package main
 // 		list[i].PrintTx()
 // 	}
 // }
+
+func main() {
+	router := mux.NewRouter()
+	router.HandleFunc("/Apply/Career", httppkg.ApplyCareer).Methods("Post")
+	router.HandleFunc("/newBlk", httppkg.CreateNewBlock).Methods("Post")
+	router.HandleFunc("/refTx", httppkg.FindAllbyAddr).Methods("Get")
+
+	http.ListenAndServe(":9000", router)
+}

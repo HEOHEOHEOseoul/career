@@ -1,34 +1,27 @@
-package main
+package httppkg
 
 import (
+	"bytes"
+	"cabb/user/txpkg"
+	"encoding/hex"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	_ "net/http"
-
-	"github.com/gorilla/mux"
 )
 
 // Request 구조체
 type Request struct {
-	Address string
-	T       *Transaction
-}
-
-// 넘어온 Transaction 을 담기 위한 구조체
-type Transaction struct {
-	Txid      [32]byte // 거래 ID
-	TimeStamp []byte   // 거래시간
-	Applier   []byte   // 요청자
-	Company   []byte   // 경력회사
-	Career    []byte   // 경력기간
-	Payment   []byte   // 결제수단
-	Job       []byte   // 직종 , 업무
-	Proof     []byte   // pdf 링크
-}
-
-// Transaction을 담기 위한 배열
-type Transactions struct {
-	Txs map[[32]byte]*Transaction
+	Address string `json:"address"`
+	Data    string `json:"data"`
+	//T       *txpkg.Tx `json:"transaction"`
+	Applier string `json:"applier"`
+	Company string `json:"company"`
+	Career  string `json:"career"`
+	Payment string `json:"payment"`
+	Job     string `json:"job"`
+	Proof   string `json:"proof"`
 }
 
 //Json 타입으로 리턴해주기 위한 구조체
@@ -37,28 +30,43 @@ type JsonResponse struct {
 	Txid    [32]byte `json:"txid"`
 }
 
-// 비어있는 Txs를 만드는 Method
-func NewTransactions() *Transactions {
-	Txs := &Transactions{}
-	Txs.Txs = make(map[[32]byte]*Transaction)
-	return Txs
-}
-func (Txs *Transactions) PutTransaction(tx *Transaction) [32]byte {
-	Txs.Txs[tx.Txid] = tx
-	return tx.Txid
-}
-func main() {
-	// Txid := ApplyCareer(request)
-	// fmt.Println(Txid, "Txid 입니다 ")
-	request := &Request{}
-	router := mux.NewRouter()
-	router.HandleFunc("/Apply/Career", request.ApplyCareer).Methods("Post")
-}
-
 // Generate Transaction
-func (r *Request) ApplyCareer(w http.ResponseWriter, req *http.Request) {
-	Txs := NewTransactions()        // 비어있는 TXS를 만들고
-	Txid := Txs.PutTransaction(r.T) // 그 비어있는 TXS안에 Transaction을 넣고 Txid를 반환
-	var response = JsonResponse{Address: r.Address, Txid: Txid}
+func ApplyCareer(w http.ResponseWriter, req *http.Request) {
+	var body Request
+
+	decoder := json.NewDecoder(req.Body)
+	decoder.DisallowUnknownFields()
+	err := decoder.Decode(&body)
+	//에러 체크
+	if err != nil {
+		fmt.Print(err)
+		return
+	}
+
+	T := txpkg.NewTx(body.Applier, body.Company, body.Career, body.Payment, body.Job, body.Proof, body.Address)
+
+	Txs := txpkg.CreateTxDB() // [임시] 최초에 만들어서 운용중인 Txs(DB) 가져와야함
+	Txid := Txs.AddTx(T)      // Txs(임시)에 트랜잭션 등록
+	T.PrintTx()
+	fmt.Println("Tx-TxID: ", T.TxID)
+	value := map[string]string{
+		"txID": hex.EncodeToString(T.TxID[:]),
+		"data": body.Data}
+	json_data, _ := json.Marshal(value)
+	resp, err := http.Post("http://localhost:9000/newBlk", "application/json", bytes.NewBuffer(json_data))
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// Response 체크.
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err == nil {
+		str := string(respBody)
+		println(str)
+	}
+
+	var response = JsonResponse{Address: body.Address, Txid: Txid}
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
