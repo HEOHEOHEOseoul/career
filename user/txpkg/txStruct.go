@@ -64,7 +64,7 @@ func NewTx(applier, company, career, payment, job, proof, wAddr string) *Tx {
 func FindBlockByTx(txID [32]byte, bs *blockpkg.Blocks) *blockpkg.Block {
 	// 최신부터 돌려보자
 	//최신 블록체인의 높이를 구한다
-	current_height := len(bs.BlockChain)
+	current_height := len(bs.BlockChain) - 1
 
 	// 최신 블록ID를 찾는다
 	curBlockID := [32]byte{}
