@@ -89,7 +89,7 @@ func DetailTx(w http.ResponseWriter, req *http.Request) {
 	var txID [32]byte
 	copy(txID[:], tmp)
 	//fmt.Println("txID: ", txID)
-	txs, bs := GChain()
+
 	f := txpkg.FindBlockByTx(txID, bs)
 	t := txpkg.FindTxByTxid(txID, txs)
 	if f != nil {

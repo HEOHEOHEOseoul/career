@@ -69,6 +69,8 @@ import (
 // }
 
 func main() {
+	Txs, Bs := httppkg.GChain()
+
 	router := mux.NewRouter()
 	router.HandleFunc("/Apply/Career", httppkg.ApplyCareer).Methods("Post")
 	router.HandleFunc("/newBlk", httppkg.CreateNewBlock).Methods("Post")
