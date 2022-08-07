@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="board/layout/basic">
+<th:block th:fragment="header">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>CABB</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" th:href="@{assets/favicon.ico}" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link th:href="@{/css/common.css}" rel="stylesheet" />
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script th:src="@{/js/scripts.js}"></script>
+    <script th:src="@{/js/jquery-ui.js}"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+​
+</head>
+​
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<link rel="stylesheet" th:href="@{/plugin/mCustomScrollbar/jquery.mCustomScrollbar.min.css}" />
+
+<div class="header">
+		<div class="header_con">
+			<!-- 로고 -->
+			<h1><a href="/"><img src="/assets/sys_logo.jpg" width="200px" alt="Bteam"></a></h1>
+			<!-- util -->
+			<div class="util">
+				<a href="/login">로그인</a>
+				<a href="/qna">문의사항</a>
+				<a href="/notice">공지사항</a>
+			</div>
+			<!--// util -->
+			<!-- GNB -->
+			<div id="gnb">
+				<ul><li class="">
+						<a href="/carrer/wallet" class="dep01" style="color: rgb(40, 97, 142);">경력확인</a>
+					</li>
+					<li class="first"><a href="/gif/gif01" class="dep01">제도안내</a>
+						<ul style="display: none;">
+							<li><a href="/gif/gif01">제도 소개</a></li>
+							<li><a href="/gif/gif02">기술자 정의</a></li>
+						</ul>
+					</li>
+					<li class=""><a href="/pif/pif01" class="dep01">신청절차</a>
+						<ul style="display: none;">
+							<li><a href="/pif/pif01">신청절차</a></li>
+							<li><a href="/pif/pif02">제출서류</a></li>
+							<li><a href="/pif/pif03">기업회원 서비스 안내</a></li>
+							<li><a href="/pif/pif04">수수료 안내</a></li>
+						</ul>
+					</li>
+					<li class=""><a href="/bbs/not_list" class="dep01">소식·알림</a>
+						<ul style="display: none;">
+							<li><a href="/bbs/not_list">공지사항</a></li>
+						</ul>
+					</li>
+					<li class=""><a href="/cos/hlp_list.jsp?largeCategory=1" class="dep01">고객센터</a>
+						<ul style="display: none;">
+							<li><a href="/cos/hlp_list.jsp?largeCategory=1">이용안내</a></li>
+							<li><a href="/cos/qna_write.jsp">온라인상담</a></li>
+							<li><a href="/cos/tru_write.jsp">경력증명서 진위확인</a></li>
+							<li><a href="/cos/com_list.jsp">등록기관 및 회사검색</a></li>
+						</ul>
+					</li></ul>
+			</div>
+			<!-- GNB -->
+		</div>
+		<!--// header_con -->
+		<div class="gnb_bg" style="display: none;"><span></span></div>
+	</div>
+	</th:block>
+	
+	<th:block layout:fragment="content">
+		<div class="card-content">
+			<form class="form-horizontal" th:action="@{/board/register}" th:object="${board}" method="post" enctype="multipart/form-data" onsubmit="return registerBoard(this)">
+				<!--/* update의 경우 서버로 전달할 게시글 번호 (PK) */-->
+				<input type="hidden" th:if="*{idx != null and idx > 0}" th:field="*{idx}" />
+				<!--/* 파일이 변경된 경우, 해당 파라미터를 이용하여 파일 삭제 및 재등록 처리 */-->
+				<input type="hidden" th:field="*{changeYn}" value="N" />
+
+				<div class="form-group">
+					<label for="title" class="col-sm-2 control-label">제목</label>
+					<div class="col-sm-10">
+						<input type="text" th:field="*{title}" class="form-control" placeholder="제목을 입력해 주세요." />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="writer" class="col-sm-2 control-label">이름</label>
+					<div class="col-sm-10">
+						<input type="text" th:field="*{writer}" class="form-control" placeholder="이름을 입력해 주세요." />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="content" class="col-sm-2 control-label">내용</label>
+					<div class="col-sm-10">
+						<textarea th:field="*{content}" class="form-control" placeholder="내용을 입력해 주세요."></textarea>
+					</div>
+				</div>
+
+				<!--/* 저장된 파일이 없는 파일 영역 */-->
+				<div th:if="${#lists.isEmpty( fileList )}" data-name="fileDiv" class="form-group filebox bs3-primary">
+					<label for="file_0" class="col-sm-2 control-label">파일1</label>
+					<div class="col-sm-10">
+						<input type="text" class="upload-name" value="파일 찾기" readonly />
+						<label for="file_0" class="control-label">찾아보기</label>
+						<input type="file" name="files" id="file_0" class="upload-hidden" onchange="changeFilename(this)" />
+					
+						<button type="button" onclick="addFile()" class="btn btn-bordered btn-xs visible-xs-inline visible-sm-inline visible-md-inline visible-lg-inline">
+							<i class="fa fa-plus" aria-hidden="true"></i>
+						</button>
+						<button type="button" onclick="removeFile(this)" class="btn btn-bordered btn-xs visible-xs-inline visible-sm-inline visible-md-inline visible-lg-inline">
+							<i class="fa fa-minus" aria-hidden="true"></i>
+						</button>
+					</div>
+				</div>
+				
+				<!--/* 저장된 파일이 있는 파일 영역 */-->
+				<div th:unless="${#lists.isEmpty( fileList )}" th:each="row, status : ${fileList}" data-name="fileDiv" class="form-group filebox bs3-primary">
+					<label th:for="|file_${status.index}|" class="col-sm-2 control-label">[[ |파일${status.count}| ]]</label>
+					<div class="col-sm-10">
+						<input type="hidden" name="fileIdxs" th:value="${row.idx}" />
+						<input type="text" class="upload-name" th:value="${row.originalName}" readonly />
+						<label th:for="|file_${status.index}|" class="control-label">찾아보기</label>
+						<input type="file" name="files" th:id="|file_${status.index}|" class="upload-hidden" onchange="changeFilename(this)" />
+					
+						<button th:if="${status.first}" type="button" onclick="addFile()" class="btn btn-bordered btn-xs visible-xs-inline visible-sm-inline visible-md-inline visible-lg-inline">
+							<i class="fa fa-plus" aria-hidden="true"></i>
+						</button>
+						<button type="button" onclick="removeFile(this)" class="btn btn-bordered btn-xs visible-xs-inline visible-sm-inline visible-md-inline visible-lg-inline">
+							<i class="fa fa-minus" aria-hidden="true"></i>
+						</button>
+					</div>
+				</div>
+
+				<div id="btnDiv" class="btn_wrap text-center" th:object="${params}">
+					<a th:href="|@{/board/list}*{makeQueryString(currentPageNo)}|" class="btn btn-default waves-effect waves-light">뒤로가기</a>
+					<button type="submit" class="btn btn-primary waves-effect waves-light">저장하기</button>
+				</div>
+			</form>
+		</div>
+		<!-- /.card-content -->
+	</th:block>
+
+	<script th:src="@{/scripts/jquery.min.js}"></script>
+	<script th:src="@{/plugin/bootstrap/js/bootstrap.min.js}"></script>
+	<script th:src="@{/plugin/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/plugin/common/moment.js}"></script>
+	<script th:src="@{/scripts/main.js}"></script>
+	<script th:src="@{/scripts/common.js}"></script>
+
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+
+			function registerBoard(form) {
+
+				var result = (
+						   isValid(form.title, "제목", null, null)
+						&& isValid(form.writer, "이름", null, null)
+						&& isValid(form.content, "내용", null, null)
+				);
+			
+				if ( result == false ) {
+					return false;
+				}
+
+				var idx = /*[[ ${board.idx} ]]*/;
+				if (isEmpty(idx) == false) {
+					var queryString = /*[[ ${params.makeQueryString(params.currentPageNo)} ]]*/;
+			
+					/*[- 쿼리 스트링을 오브젝트 형태로 변환 -]*/
+					queryString = new URLSearchParams(queryString);
+					queryString.forEach(function(value, key) {
+						if (isEmpty(value) == false) {
+							$(form).append('<input type="hidden" name="' + key + '" value="' + value + '" />');
+						}
+					});
+				}
+			}
+			/*[- end of function -]*/
+
+			const fileList = /*[[ ${fileList} ]]*/; /*[- 업로드 파일 리스트 -]*/
+			let fileIdx = isEmpty(fileList) ? 0 : fileList.length; /*[- 파일 인덱스 처리용 전역 변수 -]*/
+
+			function addFile() {
+			
+				const fileDivs = $('div[data-name="fileDiv"]');
+				if (fileDivs.length > 2) {
+					alert('파일은 최대 세 개까지 업로드 할 수 있습니다.');
+					return false;
+				}
+			
+				fileIdx++;
+			
+				const fileHtml = `
+					<div data-name="fileDiv" class="form-group filebox bs3-primary">
+						<label for="file_${fileIdx}" class="col-sm-2 control-label"></label>
+						<div class="col-sm-10">
+							<input type="text" class="upload-name" value="파일 찾기" readonly />
+							<label for="file_${fileIdx}" class="control-label">찾아보기</label>
+							<input type="file" name="files" id="file_${fileIdx}" class="upload-hidden" onchange="changeFilename(this)" />
+			
+							<button type="button" onclick="removeFile(this)" class="btn btn-bordered btn-xs visible-xs-inline visible-sm-inline visible-md-inline visible-lg-inline">
+								<i class="fa fa-minus" aria-hidden="true"></i>
+							</button>
+						</div>
+					</div>
+				`;
+			
+				$('#btnDiv').before(fileHtml);
+			}
+
+			/*[- end of function -]*/
+			
+			function removeFile(elem) {
+
+				document.getElementById('changeYn').value = 'Y';
+			
+				const prevTag = $(elem).prev().prop('tagName');
+				if (prevTag === 'BUTTON') {
+					const file = $(elem).prevAll('input[type="file"]');
+					const filename = $(elem).prevAll('input[type="text"]');
+					file.val('');
+					filename.val('파일 찾기');
+			
+					$(elem).prevAll('input[name="fileIdxs"]').remove();
+					return false;
+				}
+			
+				const target = $(elem).parents('div[data-name="fileDiv"]');
+				target.remove();
+			}
+			/*[- end of function -]*/
+
+			function changeFilename(file) {
+
+				document.getElementById('changeYn').value = 'Y';
+			
+				file = $(file);
+				const filename = file[0].files[0].name;
+				const target = file.prevAll('input.upload-name');
+				target.val(filename);
+
+				file.prevAll('input[name="fileIdxs"]').remove();
+			}
+			/*[- end of function -]*/
+
+			/*]]>*/
+		</script>
+	</th:block>
+	<th:block th:fragment="footer">
+<div class="footer">
+	<!-- 버튼영역 -->
+	<div class="footer_btn">
+		<a href="/" target="_blank">한국소프트웨어산업협회 안내</a>
+		<a href="/join/jif01.jhtml">이용약관</a>
+		<a href="/join/jif02.jhtml">개인정보처리방침</a>
+		<a href="/join/jif04.jhtml">찾아오시는 길</a>
+		<a href="/join/jif05.jhtml">사이트맵</a>
+	</div>
+	<!-- 공단로고 -->
+	<p><img src="/images/common/footer_logo_org.gif" alt="소프트웨어산업협회"></p>
+	<!-- 정보 -->
+	<span>
+		한국소프트웨어산업협회<br>
+		서류제출처 : (05717) 서울시 송파구 중대로 135, 서관 12층(가락동) 한국소프트웨어산업협회 SW기술자 경력확인 담당자 앞<br>
+		대표전화 : 02-2188-6980 / FAX : 0502-777-6967<br>
+		Copyrightⓒ2015 한국소프트웨어산업협회. ALL RIGHTS RESERVED.
+	</span>
+</div>
+</th:block>
+</html>
