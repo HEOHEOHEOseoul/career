@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<div th:replace="layout/frame :: header"></div>
+<th:block th:replace="~{layout/career_bar::setContent(~{this::content})}">
+	<th:block th:fragment="content">
+		<div class="container">
+		 	<h1 class="mt-4">결제 전 마지막 확인</h1>
+			<form th:action="@{/career/pay}" th:method="post" enctype="multipart/form-data">
+			    <div class="form-group">
+			      <label>발주처, 근무처</label>
+			      <input type="text" class="form-control" name="company" th:text="${career.company}">
+			    </div>
+			    <div class="form-group">
+			 		<label>경력 시작일 </label>
+						<input type="date" id="career_start" name="career_start" th:value="${career.start}">
+			    </div>
+			    <div class="form-group">
+			 		<label>경력 종료일 </label>
+					<input type="date" id="career_end" name="career_end" th:value="${career.end}">
+			    </div>
+			    <div class="form-group">
+			      <label>직종, 업무</label>
+			      <input type="text" class="form-control" name="job" th:value="${career.job}">
+			    </div>
+			    <div class="form-group proof-div">
+					<input name ="proof" id="uploadFiles" type="file" accept="application/pdf, image/*"/>
+			    </div>
+			    <input type="hidden" name = "applier" th:value="${applier}"/>
+			    <button type="submit" class="btn btn-primary">결제하기</button>
+		    </form>
+	<script>
+	function file_check(obj) {
+		var thumbext = obj.value; //파일을 추가한 input 박스의 값
+		thumbext = thumbext.slice(thumbext.indexOf(".") + 1).toLowerCase(); //파일 확장자를 잘라내고, 비교를 위해 소문자로 만듭니다.
+		if(thumbext == "pdf"){ //확장자를 확인합니다.
+			$(".proof-div").append("<iframe width='50%' height='600' th:src='@{/users/}+${"+[[${career.proof}]]+"}'></iframe>");
+			return;
+		}else if(thumbext == "png" || thumbext == "jpg" || thumbext == "jpeg" || thumbext == "gjf"){
+			$(".proof-div").append("<img width='50%' height='600' th:src='@{/users/}+${"+[[${career.proof}]]+"}'></iframe>");
+		}
+	}
+	    var msg = [[${result}]];
+	    alert(msg);
+	</script>
+		</div>
+	</th:block>
+</th:block>
+<div th:replace="layout/frame :: footer"></div>
+</html>

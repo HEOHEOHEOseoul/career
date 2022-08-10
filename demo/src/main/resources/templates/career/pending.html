@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:replace="layout/frame :: header"></div>
+<th:block th:replace="~{layout/career_bar::setContent(~{this::content})}">
+	<th:block th:fragment="content">
+		<h1>승인 대기중인 경력 리스트</h1>
+		<p>가장 최근의 10건만 뜹니다.</p>
+		<div th:if="${#lists.isEmpty(result)}">
+			승인 대기중인 경력이 없습니다!
+		</div>
+		<div th:if="${not #lists.isEmpty(result)}">
+		    <table class="table table-striped">
+		    	<thead>
+	            	<tr>
+						<th scope="col">#</th>
+						<th scope="col">회사 명</th>
+						<th scope="col">직종 및 업무</th>
+						<th scope="col">경력 시작일</th>
+						<th scope="col">경력 종료일</th>
+						<th scope="col">결제 여부</th>
+	            	</tr>
+	         	</thead>
+		        <tbody>
+		            <tr th:each="dto, i : ${result}">
+		        		<th scope="row">[[${i.index+1}]]</th>
+						<td><a th:href="@{/career/pending/(num=${dto.num})}">[[${dto.company}]]
+						</a></td>
+						<td>[[${dto.job}]]</td>
+						<td>[[${dto.career_start}]]</td>
+						<td>[[${dto.career_end}]]</td>
+						<td th:if="${dto.payment == '0'}"><a th:href="@{/pay/kakaoPay/(email=${email}, num=${dto.num})}">결제하기</a></td>
+						<td th:if="${dto.payment != '0'}">[[${dto.payment}]]</td>
+		            </tr>
+		         </tbody>
+	      	</table>
+      </div>
+	</th:block>
+</th:block>
+<div th:replace="layout/frame :: footer"></div>
+</html>

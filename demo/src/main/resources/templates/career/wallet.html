@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:replace="layout/frame :: header"></div>
+<th:block th:replace="~{layout/career_bar::setContent(~{this::content})}">
+	<th:block th:fragment="content">
+		<div class="container row" style="float: none; margin:100 auto;">
+			<h1>지갑 확인</h1>
+			<div th:if="${#strings.isEmpty(user.wallet)}"> 
+			<h5>앗! 아직 경력 정보가 없습니다! 지갑 만들기를 통해 자신의 경력을 쌓아보세요!! 지갑 이름은 변경할 수 없습니다.</h5><br/>
+			<form action="/career/wallet" method="post" class="input-group">
+				<input class="form-control" name="alias" placeholder="50자 이내의 자신만의 지갑이름을 지어보세요!" required>
+				<button type="submit" class="btn btn-info">지갑 만들기</button>
+			</form>
+			</div>
+			<div th:if="${not #strings.isEmpty(user.wallet)}">
+				<h5 th:text="${'내 지갑( '+ user.alias +' ) 주소 : ' + user.wallet}"> </h5>
+				<p>private key를 잊으셨다면 지갑 재생성 해주세요!</p>
+				<form action="/career/wallet" method="post" class="input-group">
+					<input type="hidden" name="alias" th:value="${user.alias}">
+					<button type="submit" class ="btn btn-warn" id="recreate">지갑 재생성하기</button>
+				</form>
+			</div>
+			<br/><br/>
+			<h3>타인의 지갑 주소 이메일로 검색하기</h3>
+			<div class="input-group">
+				<input class="form-control" id="keyIn" name="keyword">
+            	<div class="input-group-append" id="button-addon4">
+               		<button class="btn btn-outline-secondary btn-search" id ="Search" type="button">Search</button>
+               		<button class="btn btn-outline-secondary btn-clear" type="button">Clear</button>
+            	</div>
+			</div>
+			<div class="result_div">
+				<p id="wallet_result"></p>
+			</div>
+		</div>
+	</th:block>
+</th:block>
+<script>
+	$(document).ready(function(){
+		$('#Search').click(()=>{
+			var email=$("#keyIn").val();
+			console.log("ajax : "+ email);
+			$.ajax({
+			    url: "/find", // 클라이언트가 HTTP 요청을 보낼 서버의 URL 주소
+			    data: {"email" : email},  // HTTP 요청과 함께 서버로 보낼 데이터
+			    method: "GET",   // HTTP 요청 메소드(GET, POST 등)
+			    dataType: "json" // 서버에서 보내줄 데이터의 타입
+			})
+			// HTTP 요청이 성공하면 요청한 데이터가 done() 메소드로 전달됨.
+			.done(function(json) {
+				if(json.wallet == "없는 email입니다."){
+					$("#wallet_result").text(json.wallet).appendTo("#result_div");
+				}else{
+			    	$("#wallet_result").text(email+"님의 지갑 주소 : "+json.wallet).appendTo("#result_div");
+				}
+			})
+			// HTTP 요청이 실패하면 오류와 상태에 관한 정보가 fail() 메소드로 전달됨.
+			.fail(function(xhr, status, errorThrown) {
+				$("#wallet_result").text("찾을 수 없는 사람입니다. 오타를 확인해주세요.").appendTo("#result_div");
+			});
+		});
+		
+		var searchForm = $("#searchForm");
+		$('.btn-clear').click(function(e){
+			$("#keyIn").val("");
+			$("#wallet_result").text("").appendTo("#result_div");
+		});
+	});
+</script>
+<div th:replace="layout/frame :: footer"></div>
+</html>
