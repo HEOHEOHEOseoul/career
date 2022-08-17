@@ -1,0 +1,50 @@
+2022/08/16 19:33:16 server on
+2022/08/16 19:33:16 노드 실행 : 192.168.10.35:20000 
+2022/08/16 19:34:36 server on
+2022/08/16 19:34:36 노드 실행 : 192.168.10.35:20000 
+2022/08/16 19:35:17 msp에게 NodeAddressTable 수신 :  map[10000:192.168.10.35:10000 20000:192.168.10.35:20000 30000:192.168.10.35:30000 40000:192.168.10.35:40000]
+2022/08/16 19:35:17 add Commit to buffer
+2022/08/16 19:35:17 [PREPARE] NodeID: 30000
+2022/08/16 19:35:17 [Prepare-Vote]: 1
+2022/08/16 19:35:17 add Commit to buffer
+2022/08/16 19:35:17 [PREPARE] NodeID: 40000
+2022/08/16 19:35:17 [Prepare-Vote]: 2
+2022/08/16 19:35:17 [COMMIT] NodeID: 10000
+2022/08/16 19:35:17 [Commit-Vote]: 1
+2022/08/16 19:35:17 [COMMIT] NodeID: 30000
+2022/08/16 19:35:17 [Commit-Vote]: 2
+2022/08/16 19:35:17 consensus count :  1
+2022/08/16 19:35:17 [COMMIT] NodeID: 40000
+2022/08/16 19:35:17 commit message is corrupted
+2022/08/16 19:35:17 commit message is corrupted
+2022/08/16 19:35:17 commit message is corrupted
+2022/08/16 19:39:03 server on
+2022/08/16 19:39:03 노드 실행 : 192.168.10.35:20000 
+2022/08/16 22:13:28 server on
+2022/08/16 22:13:28 노드 실행 : 192.168.10.35:20000 
+2022/08/16 22:14:58 msp에게 NodeAddressTable 수신 :  map[10000:192.168.10.35:10000 20000:192.168.10.35:20000 30000:192.168.10.35:30000 40000:192.168.10.35:40000]
+2022/08/16 22:14:58 View ID 수신 :  0
+2022/08/16 22:14:58 add Commit to buffer
+2022/08/16 22:14:58 [PREPARE] NodeID: 30000
+2022/08/16 22:14:58 [Prepare-Vote]: 1
+2022/08/16 22:14:58 [PREPARE] NodeID: 40000
+2022/08/16 22:14:58 [Prepare-Vote]: 2
+2022/08/16 22:14:58 [COMMIT] NodeID: 10000
+2022/08/16 22:14:58 [Commit-Vote]: 1
+2022/08/16 22:14:58 [COMMIT] NodeID: 40000
+2022/08/16 22:14:58 [Commit-Vote]: 2
+2022/08/16 22:14:58 consensus count :  1
+2022/08/16 22:14:58 [COMMIT] NodeID: 30000
+2022/08/16 22:14:58 commit message is corrupted
+2022/08/16 22:14:58 commit message is corrupted
+2022/08/16 22:14:58 commit message is corrupted
+2022/08/16 22:26:55 [PREPARE] NodeID: 40000
+2022/08/16 22:26:55 [Prepare-Vote]: 1
+2022/08/16 22:26:55 [PREPARE] NodeID: 30000
+2022/08/16 22:26:55 [Prepare-Vote]: 2
+2022/08/16 22:26:55 [COMMIT] NodeID: 10000
+2022/08/16 22:26:55 [Commit-Vote]: 1
+2022/08/16 22:26:55 [COMMIT] NodeID: 40000
+2022/08/16 22:26:55 [Commit-Vote]: 2
+2022/08/16 22:26:55 consensus count :  2
+2022/08/16 22:26:55 add Commit to buffer

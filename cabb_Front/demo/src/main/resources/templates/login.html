@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:replace="layout/frame :: header"></div>
+<th:block th:replace="~{layout/join_bar::setContent(~{this::content})}">
+	<th:block th:fragment="content">
+		<div class="container">
+		    <h1>로그인</h1>
+		    <!--  
+		    {/* 자체 로그인 생성시 만들 것 
+		    <form th:action="@{/bteam/login_proc}" method="post">
+		        <div class="form-group">
+		            <label th:for="id">아이디</label>
+		            <input type="text" name="id" class="form-control" placeholder="아이디 입력해주세요">
+		        </div>
+		        <div class="form-group">
+		            <label th:for="pw">비밀번호</label>
+		            <input type="password" class="form-control" name="pw" placeholder="비밀번호 입력해주세요">
+		        </div>
+		        <button type="submit" class="btn btn-primary">로그인</button>
+		        <br/>
+		        <button type="button" class="btn btn-primary" onClick="location.href='signUp'">회원 가입</button>
+		        <button type="button" class="btn btn-primary" onClick="location.href='main'">메인으로</button>
+		        <br/>
+		    </form>
+		    */} -->
+		    <a href="/oauth2/authorization/google" class="btn btn-success acitve" role="button">Google Login</a>
+		    <br/>
+		    <!--  
+		    {/*<h2 align="center" th:test="${error}"></h2>
+			<h2 th:text="${logout}"></h2>
+			<script>
+				let result  = "${result}";
+				if(result == '1'){
+					alert("비밀번호 변경이 완료되었습니다. 다시 로그인해주세요.");
+				}
+			</script>
+			*/} -->
+		</div>
+	</th:block>
+</th:block>
+<div th:replace="layout/frame :: footer"></div>

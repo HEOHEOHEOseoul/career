@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- <link rel="stylesheet" href="./css/common.css">  -->
+<div th:replace="layout/frame :: header"></div>
+<div class="index_con_wrap">
+    <div class="index_container">
+        <!-- 상단문구 -->
+        <div class="index_txt_area">
+            <br><br><br><br><br><br>
+            <p>프리랜서 경력확인 블록체인에서 <font class="point">두고두고 편리한 경력관리</font></p>
+            <br><br>
+            프리랜서 경력확인제도는 프리랜서의 경력 입증의 어려움을 해소하고, 간편한 조회를 통해<br>
+            공신력있는 경력증빙 및 관리를 위한 제도입니다.
+            <br><br><br><br><br><br><br><br><br><br>
+        </div>
+        <!--// 상단문구 -->
+        <!-- 퀵링크 -->
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <div class="index_link">
+            <ul>
+                <!--내지갑, 타인지갑, 경력등록, -->
+                <li><a href="/career/mine" class="in_link_01">내 경력 확인</a></li>
+                <li><a href="/career/findothercareer" class="in_link_02">타인 경력 확인</a></li>
+                <li><a href="/career/pending" class="in_link_03">신청현황</a></li>
+                <li><a href="/career/wallet" class="in_link_04">내 지갑 조회</a></li>
+                <li><a href="/career/newcareer" class="in_link_05">경력 등록</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div th:replace="layout/frame :: footer"></div>
+<script>
+var msg = [[${result}]];
+alert(msg);
+</script>

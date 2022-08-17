@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:replace="layout/frame :: header"></div>
+<th:block th:replace="~{layout/career_bar::setContent(~{this::content})}">
+	<th:block th:fragment="content">
+			<div th:if="${list == null}">
+			<br/><br/><br/><br/>
+			아직 추가된 경력이 없습니다. 경력을 추가해보세요!
+			<a th:href="@{/career/new}">경력추가하러가기</a>
+			
+			</div>
+			<div th:if="${list != null}">
+		<h1>나의 등록된 경력 리스트</h1>
+		<p>가장 최근의 10건만 뜹니다.</p>
+		    <table class="table table-striped">
+		    	<thead>
+	            	<tr>
+						<th scope="col">Txid</th>
+						<th scope="col">회사 명</th>
+						<th scope="col">직종 및 업무</th>
+	            	</tr>
+	         	</thead>
+		        <tbody>
+	         	<span th:each="dto, i : ${list}">
+		        		<th scope ="row">[[${i.index+1}]]
+						<td><a th:href="@{/career/detail/(txid=${dto.txid})}">[[${dto.txid}]]</a></td>
+						<td>[[${dto.company}]]</td>
+						<td>[[${dto.job}]]</td>
+						<td>[[${dto.proof}]]</td>
+		        	</tr>
+		         </tbody>
+		         </span>
+	      	</table>
+			</div>
+     	
+	</th:block>
+</th:block>
+<div th:replace="layout/frame :: footer"></div>
+</html>

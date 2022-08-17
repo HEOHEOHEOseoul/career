@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="layout/frame :: header"></div>
+<th:block th:replace="~{layout/career_bar::setContent(~{this::content})}">
+	<th:block th:fragment="content">
+		<div class="container row" style="float: none; margin:100 auto;">
+			<h1>타인의 경력 확인</h1>
+			<h3>타인의 지갑 주소를 통해서 그사람의 경력을 조회해보세요</h3>
+			<form action="/career/others" method="post" enctype="multipart/form-data">
+			<div class="input-group">
+				<input class="form-control" id="keyIn" name="address">
+            	<div class="input-group-append" id="button-addon4">
+               		<button class="btn btn-outline-secondary btn-search" id ="Search" type="submit">Search</button>
+               		<button class="btn btn-outline-secondary btn-clear" type="button">Clear</button>
+            	</div>
+			</div>
+		</div>
+	</th:block>
+</th:block>
+
+<div th:replace="layout/frame :: footer"></div>
+</html>

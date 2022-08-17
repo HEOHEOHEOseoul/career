@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:replace="layout/frame :: header"></div>
+<div class="index_con_wrap">
+	<div class="index_container">
+		<!-- 상단문구 -->
+		<div class="index_txt_area">
+			<p>SW기술자 경력확인 한번으로 <font class="point">두고두고 편리한 경력관리</font></p>
+			SW기술자 경력확인제도는 SW기술자의 경력 입증의 어려움을 해소하고, 지속적인 경력관리를 통해<br> 
+			공신력있는 경력증빙 및 권익보호를 위한 제도입니다.
+		</div>
+		<!--// 상단문구 -->
+		<!-- 퀵링크 -->
+		<div class="index_link">
+			<ul>
+				<li><a href="/pif/pif01.jhtml" class="in_link_01">절차안내</a></li>
+				<li><a href="/career" class="in_link_02">SW기술자 경력확인</a></li>
+				<li><a href="/career/pending" class="in_link_03">신청현황</a></li>
+			</ul>
+		</div>
+		<!--// 퀵링크 -->
+		<!-- 제출서류 안내 -->
+		<div class="index_guide_01">
+			<a href="/pif/pif02.jhtml">제출서류안내-소프트웨어기술자 경력신청 시 필요한 제출서류를 안내해드립니다. 반드시 제출서류를 확인 후 신청하시기 바랍니다.</a>
+		</div>
+		<!--// 제출서류 안내 -->
+		<!-- 공지사항 -->
+		<div class="index_notice">
+			<p class="notice_title">공지사항</p>
+			<table class="index_tbl" summary="공지사항">
+				<caption>공지사항</caption>
+				<colgroup>
+					<col style="width:22%">
+					<col style="width:78%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col">일자</th>
+						<th scope="col">제목</th>
+					</tr>
+				</thead>
+				<tbody>
+				<!-- {/*추가구현 필요 */}-->
+					<td>- 2022.04.22</td>
+					<td><a href="/bbs/dwn_view.jsp?dataNo=2000000009">SW분야 표준계약서 배포·시행 안내</a></td>
+				</tbody>
+			</table>
+			<a href="/bbs/not_list.jsp" class="btn_more_notice">더보기</a>
+		</div>
+		<!--// 공지사항 -->
+		<!-- 경력신청 문의전화 -->
+		<!-- 채용연계서비스 -->
+		<div class="index_banner_02">
+			<a href="https://www.sw.or.kr/site/sw/02/10202010000002017070309.jsp" target="_blank">소프트웨어개발자 채용연계서비스 - 소프트웨어개발자를 위한 구인구직 정보를 제공합니다.</a>
+		</div>
+		<!--// 채용연계서비스 -->
+		<div class="index_banner_01">
+			경력신청 문의전화 - 상담시간 : 평일 9시 ~ 18시, TEL  02-0000-0000
+		</div>
+		<!--// 경력신청 문의전화 -->		
+	</div>
+</div>
+<div th:replace="layout/frame :: footer"></div>
+<script>
+var msg = [[${result}]];
+alert(msg);
+</script>
